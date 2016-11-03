@@ -2,3 +2,4 @@ node_modules
 *.swp
 *.swo
 **/build/**
+front-end/public/index.html
