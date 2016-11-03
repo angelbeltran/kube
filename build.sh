@@ -1,14 +1,23 @@
-# build front end components
-cd front-end
-webpack
-cd ..
-VERSION=$(cat front-end/version)
-((VERSION++))
-docker build -t front-end:v$VERSION front-end              # build next version
-echo $VERSION > front-end/version
+CWD=$(pwd)
+DIRS="front-end back-end"
+for DIR in $DIRS; do
+  # move into the directory
+  cd $DIR
 
-# build back end components
-VERSION=$(cat back-end/version)
-((VERSION++))
-docker build -t back-end:v$VERSION back-end              # build next version
-echo $VERSION > back-end/version
+  # run webpack if a webpack config is present
+  if [ -e "webpack.config.js" ]; then
+    webpack
+  elif [ -e "webpack.config.json" ]; then
+    webpack
+  fi
+
+  # build latest docker image
+  VERSION=$(cat version)
+  ((VERSION++))
+  IMAGE=$(cat image)
+  docker build -t ${IMAGE}:v${VERSION} .
+  echo $VERSION > version
+
+  # return to root of project
+  cd $CWD
+done
