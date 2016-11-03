@@ -1,0 +1,37 @@
+{
+  "name": "counter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "sh build.sh",
+    "deploy": "sh deploy.sh",
+    "env": "eval $(minikube docker-env)",
+    "expose": "sh expose.sh",
+    "update-images": "sh set-latest-images.sh",
+    "setup": "npm run env && npm run build",
+    "test": "node test.js",
+    "up": "npm run build && npm run update-images",
+    "webpack": "webpack --target front-end"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^1.2.4",
+    "koa-better-body": "^3.0.2",
+    "koa-proxy": "^0.6.0",
+    "koa-route": "^2.4.2",
+    "koa-static": "^2.0.0",
+    "mongoose": "^4.6.5",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "superagent": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.7",
+    "babel-preset-es2016": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "webpack": "^1.13.3"
+  }
+}
