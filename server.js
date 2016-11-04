@@ -1,6 +1,5 @@
 'use strict'
 
-// TODO: remove unneeded dependencies
 const koa = require('koa')
 const proxy = require('koa-proxy')
 
