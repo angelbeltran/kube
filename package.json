@@ -15,7 +15,7 @@
     "destroy-db": "kubectl delete -f db/index.yaml",
     "destroy-volumes": "kubectl delete -f volumes/index.yaml",
     "update": "sh update.sh",
-    "setup": "npm run env && npm run build && npm run deploy",
+    "setup": "npm run env && npm run build",
     "test": "node test.js",
     "start": "node ."
   },
