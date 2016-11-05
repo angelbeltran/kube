@@ -2,6 +2,7 @@
 
 ```sh
 npm run build                 # build next version and "latest" images, and run webpack in necessary directories
+npm run bundle                # bundle all the configs in the project directories
 npm run deploy                # create all services and deployments
 npm run deploy-back-end       # create back-end service and deployment
 npm run deploy-front-end      # create front service and deployment
