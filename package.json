@@ -16,8 +16,7 @@
     "destroy-database": "sh bundle-configs.sh database && kubectl delete -f database/index.yaml",
     "destroy-volumes": "sh bundle-configs.sh volumes && kubectl delete -f volumes/index.yaml",
     "update": "sh update.sh",
-    "setup": "eval $(minikube docker-env) && npm run build && npm run bundle",
-    "test": "node test.js",
+    "setup": "eval $(minikube docker-env) && sh start-up.sh",
     "start": "node ."
   },
   "author": "",
