@@ -14,7 +14,7 @@ kind: Deployment
 metadata:
   name: database
 spec:
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -32,5 +32,6 @@ spec:
       volumes:
         - name: mongo
           persistentVolumeClaim:
-            claimName: claim1
+            claimName: claim-1
+---
 

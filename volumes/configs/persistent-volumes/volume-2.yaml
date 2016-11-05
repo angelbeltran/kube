@@ -1,0 +1,12 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: volume-2
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 128Mi
+  hostPath:
+    path: /data/mpv/
+  persistentVolumeReclaimPolicy: Retain
