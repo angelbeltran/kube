@@ -1,3 +1,6 @@
+# set up docker configuration for minikube daemon
+eval $(minikube docker-env)
+
 # bundle all kubernetes yaml configs per directory
 sh bundle-configs.sh
 
@@ -10,6 +13,8 @@ for RESOURCE_TYPE in $RESOURCE_TYPES; do
 done
 
 # find missing resources
+MISSING_RESOURCES=''
+
 MISSING_DEPS=''
 MISSING_SVCS=''
 MISSING_PVS=''
@@ -32,8 +37,10 @@ for DIR in $DEFAULT_DIRS; do
         fi
       done
       if [ "$MATCH" -eq 0 ]; then
-        MISSING_PVS+=$DIR/configs/persistent-volumes/$NAME.yaml
-        MISSING_PVS+=' '
+        #MISSING_PVS+=$DIR/configs/persistent-volumes/$NAME.yaml
+        #MISSING_PVS+=' '
+        MISSING_RESOURCES+=$DIR/configs/persistent-volumes/$NAME.yaml
+        MISSING_RESOURCES+=' '
       fi
     elif [ "$KIND" = "PersistentVolumeClaim" ]; then
       MATCH=0
@@ -43,8 +50,10 @@ for DIR in $DEFAULT_DIRS; do
         fi
       done
       if [ "$MATCH" -eq 0 ]; then
-        MISSING_PVCS+=$DIR/configs/persistent-volume-claims/$NAME.yaml
-        MISSING_PVCS+=' '
+        #MISSING_PVCS+=$DIR/configs/persistent-volume-claims/$NAME.yaml
+        #MISSING_PVCS+=' '
+        MISSING_RESOURCES+=$DIR/configs/persistent-volume-claims/$NAME.yaml
+        MISSING_RESOURCES+=' '
       fi
     elif [ "$KIND" = "Service" ]; then
       MATCH=0
@@ -54,8 +63,10 @@ for DIR in $DEFAULT_DIRS; do
         fi
       done
       if [ "$MATCH" -eq 0 ]; then
-        MISSING_SVCS+=$DIR/configs/services/$NAME.yaml
-        MISSING_SVCS+=' '
+        #MISSING_SVCS+=$DIR/configs/services/$NAME.yaml
+        #MISSING_SVCS+=' '
+        MISSING_RESOURCES+=$DIR/configs/services/$NAME.yaml
+        MISSING_RESOURCES+=' '
       fi
     elif [ "$KIND" = "Deployment" ]; then
       MATCH=0
@@ -65,8 +76,10 @@ for DIR in $DEFAULT_DIRS; do
         fi
       done
       if [ "$MATCH" -eq 0 ]; then
-        MISSING_DEPS+=$DIR/configs/deployments/$NAME.yaml
-        MISSING_DEPS+=' '
+        #MISSING_DEPS+=$DIR/configs/deployments/$NAME.yaml
+        #MISSING_DEPS+=' '
+        MISSING_RESOURCES+=$DIR/configs/deployments/$NAME.yaml
+        MISSING_RESOURCES+=' '
       fi
     fi
   done
@@ -74,28 +87,14 @@ done
 
 RESOURCES_MISSING=0
 
-# supply missing resources
-for PV in $MISSING_PVS; do
-  kubectl create -f ${PV}
-  RESOURCES_MISSING=1
-done
-for PVC in $MISSING_PVCS; do
-  kubectl create -f ${PVC}
-  RESOURCES_MISSING=1
-done
-for SVC in $MISSING_SVCS; do
-  kubectl create -f ${SVC}
-  RESOURCES_MISSING=1
-done
-for DEP in $MISSING_DEPS; do
-  kubectl create -f ${DEP}
-  RESOURCES_MISSING=1
-done
 
+# supply missing resources
+for RESOURCE in $MISSING_RESOURCES; do
+  kubectl create -f ${RESOURCE}
+  ((RESOURCES_MISSING++))
+done
 if [ "$RESOURCES_MISSING" -eq 0 ]; then
   echo All resources present in minikube cluster
+else
+  echo Generated $RESOURCES_MISSING resources
 fi
-
-
-# start koa proxy
-#node .
