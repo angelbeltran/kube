@@ -8,6 +8,14 @@ spec:
     metadata:
       labels:
         app: back-end
+      annotations:
+        # KUBERNETES CAN'T FIND IMAGE!
+        #pod.beta.kubernetes.io/init-containers: '[
+        #  {
+        #    "name": "populate-pets",
+        #    "image": "populate-pets:latest"
+        #  }
+        #]'
     spec:
       containers:
       - name: back-end
@@ -15,4 +23,9 @@ spec:
         ports:
         - containerPort: 3000
         imagePullPolicy: Never
-
+        readinessProbe:
+          httpGet:
+            path: /pet/Bob
+            port: 3000
+          initialDelaySeconds: 10
+          timeoutSeconds: 1

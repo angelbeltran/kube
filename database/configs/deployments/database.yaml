@@ -18,6 +18,12 @@ spec:
             - mountPath: /data/db
               name: mongo
           imagePullPolicy: IfNotPresent
+          #livenessProbe:
+          #  exec:
+          #    command:
+          #      - LAST_LINE=$(echo exit | mongo | tail -n1); if [ "$LAST_LINE" != "bye" ]; then echo $(echo exit | mongo); exit 1; else echo Healthy; fi;
+          #  initialDelaySeconds: 15
+          #  timeoutSeconds: 1
       volumes:
         - name: mongo
           persistentVolumeClaim:
